@@ -41,5 +41,7 @@ function keyPressed() {
         mySprite.x_velocity = 0; 
         mySprite.y_velocity = 5; 
     }
+    mySprite.x += mySprite.x_velocity 
+    mySprite.y += mySprite.y_velocity 
 }
 

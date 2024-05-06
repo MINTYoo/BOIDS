@@ -67,7 +67,5 @@ class Boid {
         this.acceleration.mult(0);
     }
 
-    show() {
-        ellipse(this.position.x, this.position.y, 8, 8);
-    }
+   
 }

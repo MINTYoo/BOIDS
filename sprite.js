@@ -1,15 +1,18 @@
 // Sprite class with flocking behavior
 class Sprite {
+
     constructor(data, numBoids) {
         this.data = data;
+        // boid array
         this.boids = [];
+        //push new instances of boids into the array
         for (let i = 0; i < numBoids; i++) {
             this.boids.push(new Boid());
         }
         this.x = width / 2;
         this.y = height / 2;
         this.currentAnimation = 'idleWave'; // Initial animation state
-        this.loadedImgs = {}; // Object to store loaded images for each animation
+        this.loadedImgs = {}; 
         this.currentFrame = 0; // Current frame number
     }
 
@@ -34,8 +37,8 @@ class Sprite {
             boid.checkEdges(); // Check for boundary collisions
         }
 
-        this.x = this.boids[0].position.x; // Example for x position
-        this.y = this.boids[0].position.y; // Example for y position
+        this.x = this.boids[0].position.x; 
+        this.y = this.boids[0].position.y; 
     }
 
     display() {
@@ -47,7 +50,7 @@ class Sprite {
         image(frames[this.currentFrame], this.x, this.y);
     }
 
-    // Change animation state
+
     changeAnimation(animation) {
         this.currentAnimation = animation;
         // Reset the current frame when animation changes
