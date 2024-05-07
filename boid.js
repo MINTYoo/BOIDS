@@ -4,11 +4,14 @@
 class Boid {
     constructor() {
         this.position = createVector(random(width), random(height));
-        this.velocity = p5.Vector.random2D().mult(2);
+        this.velocity = p5.Vector.random2D().mult(10);
         this.acceleration = createVector();
         this.maxForce = 0.05;
-        this.maxSpeed = 4;
+        this.maxSpeed = 30;
+        this.state = "idle";
+        
     }
+
 
     flock(boids) {
         let alignment = createVector();
