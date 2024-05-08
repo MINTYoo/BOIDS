@@ -35,10 +35,11 @@ class Sprite {
             boid.update();
             //boid.limitSpeed(); // Limit speed
             boid.checkEdges(); // Check for boundary collisions
+            this.x = boid.position.x; 
+            this.y = boid.position.y; 
         }
 
-        this.x = this.boids[0].position.x; 
-        this.y = this.boids[0].position.y; 
+    
     }
 
     display() {

@@ -26,22 +26,21 @@ function draw() {
 function keyPressed() {
     if (keyCode === RIGHT_ARROW) {
         mySprite.changeAnimation('walk_E');
-        mySprite.x_velocity = 5; 
+        mySprite.x_velocity = 30; 
         mySprite.y_velocity = 0; 
     } else if (keyCode === LEFT_ARROW) {
         mySprite.changeAnimation('walk_W');
-        mySprite.x_velocity = -5; 
+        mySprite.x_velocity = -30; 
         mySprite.y_velocity = 0; 
     } else if (keyCode === UP_ARROW) {
         mySprite.changeAnimation('walk_N');
         mySprite.x_velocity = 0; 
-        mySprite.y_velocity = -5; 
+        mySprite.y_velocity = -30; 
     } else if (keyCode === DOWN_ARROW) {
         mySprite.changeAnimation('walk_S');
         mySprite.x_velocity = 0; 
-        mySprite.y_velocity = 5; 
+        mySprite.y_velocity = 30; 
     }
-    mySprite.x += mySprite.x_velocity 
-    mySprite.y += mySprite.y_velocity 
+    mySprite.updatePosition();
 }
 
