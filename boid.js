@@ -4,11 +4,10 @@
 class Boid {
     constructor() {
         this.position = createVector(random(width), random(height));
-        this.velocity = p5.Vector.random2D().mult(10);
+        this.velocity = p5.Vector.random2D().mult(5);
         this.acceleration = createVector();
-        this.maxForce = 0.05;
+        this.maxForce = 0.10;
         this.maxSpeed = 30;
-        this.state = "idle";
         
     }
 
