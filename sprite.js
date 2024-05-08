@@ -1,17 +1,20 @@
 // Sprite class with flocking behavior
+
+const idle_state = ["idle", "idleBackAndForth", "idleBreathing", "idleFall", "idleLayDown", "idleLookAround", "idleLookDown", "idleLookLeft", "idleLookRight", "idleLookUp", "idleSit", "idleSpin", "idleWave"];
 class Sprite {
 
     constructor(data, numBoids) {
         this.data = data;
         // boid array
         this.boids = [];
+        
         //push new instances of boids into the array
         for (let i = 0; i < numBoids; i++) {
             this.boids.push(new Boid());
         }
         this.x = width / 2;
         this.y = height / 2;
-        this.currentAnimation = 'idleWave'; // Initial animation state
+        this.currentAnimation = 'idle'; // Initial animation state
         this.loadedImgs = {}; 
         this.currentFrame = 0; // Current frame number
     }

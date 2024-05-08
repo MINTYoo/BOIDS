@@ -1,46 +1,58 @@
-
+// Global variables
+let sprites = [];
+let penguins; 
 
 // Preload function
 function preload() {
     // Load JSON file
     penguins = loadJSON("spriteImages/Penguins/animationData.json");
+    bkImage = loadImage("imgs/BK.jpg")
 }
-
-// Global variables
-let mySprite;
 
 // Setup function
 function setup() {
     createCanvas(windowWidth, windowHeight);
-    mySprite = new Sprite(penguins, 10); // Example: 10 penguins
-    mySprite.preloadAnimations(); // Preload all animations
+
+  
+    for (let i = 0; i < 10; i++) { 
+        let sprite = new Sprite(penguins, 1); 
+        sprite.preloadAnimations(); 
+        sprites.push(sprite); 
+    }
 }
 
 // Draw function
 function draw() {
-    background(255);
-    mySprite.updatePosition();
-    mySprite.display();
-}
+    background(bkImage);
 
-function keyPressed() {
-    if (keyCode === RIGHT_ARROW) {
-        mySprite.changeAnimation('walk_E');
-        mySprite.x_velocity = 30; 
-        mySprite.y_velocity = 0; 
-    } else if (keyCode === LEFT_ARROW) {
-        mySprite.changeAnimation('walk_W');
-        mySprite.x_velocity = -30; 
-        mySprite.y_velocity = 0; 
-    } else if (keyCode === UP_ARROW) {
-        mySprite.changeAnimation('walk_N');
-        mySprite.x_velocity = 0; 
-        mySprite.y_velocity = -30; 
-    } else if (keyCode === DOWN_ARROW) {
-        mySprite.changeAnimation('walk_S');
-        mySprite.x_velocity = 0; 
-        mySprite.y_velocity = 30; 
+    // Update and display 
+    for (let sprite of sprites) {
+        sprite.updatePosition();
+        sprite.display();
     }
-    mySprite.updatePosition();
 }
 
+// Handle key press events
+function keyPressed() {
+    for (let sprite of sprites) {
+        if (keyCode === RIGHT_ARROW) {
+            sprite.changeAnimation('walk_E');
+            sprite.x_velocity = 5;
+            sprite.y_velocity = 0;
+        } else if (keyCode === LEFT_ARROW) {
+            sprite.changeAnimation('walk_W');
+            sprite.x_velocity = -5;
+            sprite.y_velocity = 0;
+        } else if (keyCode === UP_ARROW) {
+            sprite.changeAnimation('walk_N');
+            sprite.x_velocity = 0;
+            sprite.y_velocity = -5;
+        } else if (keyCode === DOWN_ARROW) {
+            sprite.changeAnimation('walk_S');
+            sprite.x_velocity = 0;
+            sprite.y_velocity = 5;
+        }
+        sprite.x += sprite.x_velocity;
+        sprite.y += sprite.y_velocity;
+    }
+}
