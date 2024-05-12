@@ -16,6 +16,7 @@ class Player {
         for (let i = 0; i < animationLength; i++) {
             let imagePath = `spriteImages/Penguins/TenderBud/${this.animation}/${i}.png`;
             let img = loadImage(imagePath);
+           // console.log(imagePath)
             this.animationFrames.push(img);
         }
     }
@@ -30,36 +31,41 @@ class Player {
         this.y += this.y_velocity;
     }
 
-    updateAnimation(animation){
-        this.animation = animation
+
+
+    keyInput() {
+        // Reset player velocity before checking for key presses
+        this.x_velocity = 0;
+        this.y_velocity = 0;
+    
+        // Check for arrow key presses and update player velocity accordingly
+        if (keyIsDown(RIGHT_ARROW)) {
+            this.animation = "walk_E";
+            this.x_velocity = 20;
+        } else if (keyIsDown(LEFT_ARROW)) {
+            this.animation = "walk_W";
+            this.x_velocity = -20;
+        } else if (keyIsDown(UP_ARROW)) {
+            this.animation = "walk_N";
+            this.y_velocity = -20;
+        } else if (keyIsDown(DOWN_ARROW)) {
+            this.animation = "walk_S";
+            this.y_velocity = 20;
+        }
+    
+        // Update player position
+        this.updatePosition();
+    
+        // Reset current frame to start from the beginning of the new animation
         this.currentFrame = 0;
     }
 
-    keyInput() {
-        if (keyCode === RIGHT_ARROW) {
-            this.updateAnimation("walk_E");
-            this.x_velocity = 20;
-            this.y_velocity = 0;
-        } else if (keyCode === LEFT_ARROW) {
-            this.updateAnimation("walk_W");
-            this.x_velocity = -20;
-            player.y_velocity = 0;
-        } else if (keyCode === UP_ARROW) {
-            this.updateAnimation("walk_N");
-            this.x_velocity = 0;
-            this.y_velocity = -20;
-        } else if (keyCode === DOWN_ARROW) {
-            this.updateAnimation("walk_S");
-            this.x_velocity = 0;
-            this.y_velocity = 20;
-        }
-        this.updatePosition();
+    getImageData(){
+        return this.animationFrames[this.currentFrame]
     }
+    
+    
 
-}
-
-function keyPressed(){
-    player.keyInput()
 }
 
 

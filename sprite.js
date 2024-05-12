@@ -1,14 +1,18 @@
+
 // Sprite class with flocking behavior
+
+const idle_state = ["idle", "idleBackAndForth", "idleBreathing", "idleFall", "idleLayDown", "idleLookAround", "idleLookDown", "idleLookLeft", "idleLookRight", "idleLookUp", "idleSit", "idleSpin", "idleWave"];
 class Sprite {
 
     constructor(data, numBoids) {
         this.data = data;
         // boid array
         this.boids = [];
+        
         //push new instances of boids into the array
-        //for (let i = 0; i < numBoids; i++) {
+        for (let i = 0; i < numBoids; i++) {
             this.boids.push(new Boid());
-        //}
+        }
         this.x = width / 2;
         this.y = height / 2;
         this.currentAnimation = 'idle'; // Initial animation state
@@ -48,7 +52,6 @@ class Sprite {
         // Calculate the current frame number based on the number of frames
         this.currentFrame = (this.currentFrame + 1) % frames.length;
         // Draw the current frame
-        //console.log(frames[this.currentFrame])
         image(frames[this.currentFrame], this.x, this.y);
     }
 
@@ -58,4 +61,8 @@ class Sprite {
         // Reset the current frame when animation changes
         this.currentFrame = 0;
     }
+    getImageData(){
+        return this.loadedImgs[this.currentAnimation][this.currentFrame]
+    }
+    
 }
