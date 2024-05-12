@@ -17,8 +17,8 @@ function setup() {
     createCanvas(windowWidth, windowHeight);
 
     // Create sprites
-    for (let i = 0; i < 3; i++) { 
-        let sprite = new Sprite(penguins, 1); 
+    for (let i = 0; i < 1; i++) { 
+        let sprite = new Sprite(penguins, 20); 
         sprite.preloadAnimations(); 
         sprites.push(sprite); 
     }

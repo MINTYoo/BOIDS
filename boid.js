@@ -3,9 +3,12 @@ class Boid {
         this.position = createVector(random(width), random(height));
         this.velocity = p5.Vector.random2D().mult(random(2, 5)); // Random initial velocity
         this.acceleration = createVector();
-        this.maxForce = 0.2; // Maximum steering force
+        this.maxForce = 1; // Maximum steering force
         this.maxSpeed = 5; // Maximum speed
         this.perceptionRadius = 100; // Perception radius for flocking behaviors
+
+        this.sprite = new Sprite(penguins, 0); 
+        this.sprite.preloadAnimations(); 
     }
 
   
@@ -45,8 +48,8 @@ class Boid {
             separation.limit(this.maxForce);
         }
 
-        this.acceleration.add(alignment);
-        this.acceleration.add(cohesion);
+        //this.acceleration.add(alignment);
+        //this.acceleration.add(cohesion);
         this.acceleration.add(separation);
     }
 
@@ -66,7 +69,18 @@ class Boid {
         this.velocity.add(this.acceleration);
         this.velocity.limit(this.maxSpeed);
         this.acceleration.mult(0); // Reset acceleration
+
+        this.sprite.x = this.position.x;
+        this.sprite.y = this.position.y;
+        this.sprite.display();
     }
+
+
+    show() {
+        strokeWeight(6);
+        stroke(255);
+        point(this.position.x, this.position.y);
+      }
 
     
 }
