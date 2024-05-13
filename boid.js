@@ -7,6 +7,7 @@ class Boid {
         this.maxSpeed = 5; // Maximum speed
         this.perceptionRadius = 100; // Perception radius for flocking behaviors
 
+        //Sprite that will follow the boid's position
         this.sprite = new Sprite(penguins, 0); 
         this.sprite.preloadAnimations(); 
     }
@@ -48,8 +49,15 @@ class Boid {
             separation.limit(this.maxForce);
         }
 
-        //this.acceleration.add(alignment);
-        //this.acceleration.add(cohesion);
+        //Assign Force Values based on sliders
+        alignment.mult(alignSlider.value());
+        cohesion.mult(cohesionSlider.value());
+        separation.mult(separationSlider.value());
+        this.perceptionRadius = perceptionSlider.value();
+        //this.maxSpeed = maxSpeedSlider.value();
+
+        this.acceleration.add(alignment);
+        this.acceleration.add(cohesion);
         this.acceleration.add(separation);
     }
 

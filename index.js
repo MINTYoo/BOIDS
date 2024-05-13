@@ -1,8 +1,10 @@
 // Global variables
-let sprites = [];
+//let sprites = [];
 let player;
 let penguins;
 let bkImage;
+let boids = [];
+let numBoids = 10;
 
 // Preload function
 function preload() {
@@ -16,12 +18,18 @@ function preload() {
 function setup() {
     createCanvas(windowWidth, windowHeight);
 
-    // Create sprites
-    for (let i = 0; i < 1; i++) { 
-        let sprite = new Sprite(penguins, 20); 
-        sprite.preloadAnimations(); 
-        sprites.push(sprite); 
+    alignSlider = createSlider(0, 2, 0, 0.1);
+    cohesionSlider = createSlider(0, 2, 0, 0.1);
+    separationSlider = createSlider(0, 2, 0, 0.1);
+    perceptionSlider = createSlider(0, 500, 5, 10);
+    //maxSpeedSlider = createSlider(2, 14, 4, 2);
+    
+
+    //Create Boids
+    for(let i = 0; i < numBoids; i++) {
+        boids.push(new Boid());
     }
+
     player = new Player(100, 100, "idle", penguins);
     player.load(); // Preload animation frames
 }
@@ -31,15 +39,23 @@ function draw() {
     background(bkImage);
 
     // Update and display sprites
-    for (let i = sprites.length - 1; i >= 0; i--) {
-        let sprite = sprites[i];
+    for (let i = boids.length - 1; i >= 0; i--) {
+        let boid = boids[i];
+        let sprite = boids[i].sprite;
         if (checkCollision(player, sprite)) {
             console.log("Collision detected between player and sprite");
             //we can remove from the array
-            sprites.splice(i, 1);
+            //sprites.splice(i, 1);
+            boids.splice(i, 1);
         } else {
-            sprite.updatePosition();
-            sprite.display();
+          // sprite.updatePosition();
+          // sprite.display();
+            //Assign each boid to the boids flock and update/display position
+            boid.flock(boids);
+            boid.update();
+            boid.checkEdges(); // Check for boundary collisions
+            //boid.limitSpeed(); // Limit speed
+            boid.show();
         }
     }
 
@@ -48,11 +64,14 @@ function draw() {
     player.keyInput()
 }
 
+
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
-  }
+}
 
-  function checkCollision(obj1, obj2) {
+
+
+function checkCollision(obj1, obj2) {
     // Check if animation frames are loaded
     if (obj1.animationFrames.length === 0 || obj2.loadedImgs[obj1.animation] === undefined) {
         return false; 
@@ -61,7 +80,7 @@ function windowResized() {
 
     let obj1Frame = obj1.getImageData()
     let obj2Frame = obj2.getImageData();
-    
+
     //need to be defined to not get hight/width error
     if (!obj1Frame || !obj2Frame) {
         return false; 
