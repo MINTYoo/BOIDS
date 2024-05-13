@@ -7,7 +7,7 @@ let boids = [];
 
 let numBoids = 5;
 let score = 0;
-=======
+
 let numBoids = 10;
 
 
@@ -40,7 +40,7 @@ function setup() {
     player = new Player( penguins);
     player.preloadAnimations(); // Preload animation frames
 
-=======
+
         boids.push(new Boid());
     }
 
@@ -69,7 +69,7 @@ function draw() {
             collisionDetected = true;
             score++;
         } else {
-=======
+
     for (let i = boids.length - 1; i >= 0; i--) {
         let boid = boids[i];
         let sprite = boids[i].sprite;
@@ -94,7 +94,7 @@ function draw() {
             //boid.checkEdges(); // Check for boundary collisions
             //boid.limitSpeed(); // Limit speed
             //boid.show();
-=======
+
             boid.show();
 
         }
