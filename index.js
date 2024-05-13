@@ -4,7 +4,12 @@ let player;
 let penguins;
 let bkImage;
 let boids = [];
+
+let numBoids = 5;
+let score = 0;
+=======
 let numBoids = 10;
+
 
 // Preload function
 function preload() {
@@ -27,11 +32,21 @@ function setup() {
 
     //Create Boids
     for(let i = 0; i < numBoids; i++) {
+
+        let sprite = new Sprite(penguins, 3);
+        boids.push(new Boid());
+    }
+
+    player = new Player( penguins);
+    player.preloadAnimations(); // Preload animation frames
+
+=======
         boids.push(new Boid());
     }
 
     player = new Player(100, 100, "idle", penguins);
     player.load(); // Preload animation frames
+
 }
 
 // Draw function
@@ -39,6 +54,22 @@ function draw() {
     background(bkImage);
 
     // Update and display sprites
+
+    player.checkEdges()
+    player.display();
+    player.keyInput();
+    for (let i = boids.length - 1; i >= 0; i--) {
+        let boid = boids[i];
+        let sprite = boids[i].sprite;
+        
+        if (checkCollision(player, sprite)) {
+            console.log("Collision detected between player and sprite");
+            // Remove sprite from array
+            boids.splice(i, 1);
+            collisionDetected = true;
+            score++;
+        } else {
+=======
     for (let i = boids.length - 1; i >= 0; i--) {
         let boid = boids[i];
         let sprite = boids[i].sprite;
@@ -51,17 +82,39 @@ function draw() {
           // sprite.updatePosition();
           // sprite.display();
             //Assign each boid to the boids flock and update/display position
+
             boid.flock(boids);
             boid.update();
             boid.checkEdges(); // Check for boundary collisions
             //boid.limitSpeed(); // Limit speed
+
+            //boid.show();
+            //boid.flock(boids);
+            //boid.update();
+            //boid.checkEdges(); // Check for boundary collisions
+            //boid.limitSpeed(); // Limit speed
+            //boid.show();
+=======
             boid.show();
+
         }
+
+    }
+    if ( boids.length === 0) {
+        spawnSprites();
+    }
+    // Update and display player
+    fill(255);
+    textSize(24);
+    text("Score: " + score, 20, 40);
+}
+
+function spawnSprites() {
+    for (let i = 0; i < numBoids; i++) {
+        let sprite = new Sprite(penguins, 3);
+        boids.push(new Boid());
     }
 
-    // Update and display player
-    player.display();
-    player.keyInput()
 }
 
 
@@ -77,33 +130,37 @@ function checkCollision(obj1, obj2) {
         return false; 
     }
 
+function checkCollision(obj1, obj2) {
 
-    let obj1Frame = obj1.getImageData()
+
+    // Get the dimensions of the animation frames for obj1 and obj2
+    let obj1Frame = obj1.getImageData();
     let obj2Frame = obj2.getImageData();
 
+
     //need to be defined to not get hight/width error
+
     if (!obj1Frame || !obj2Frame) {
-        return false; 
+        return false;
     }
 
-    //get player paramters 
+    // Calculate bounding boxes for obj1
     let obj1Left = obj1.x;
     let obj1Right = obj1.x + obj1Frame.width;
     let obj1Top = obj1.y;
     let obj1Bottom = obj1.y + obj1Frame.height;
 
-    //get sprite parameters
+    // Calculate bounding boxes for obj2
     let obj2Left = obj2.x;
     let obj2Right = obj2.x + obj2Frame.width;
     let obj2Top = obj2.y;
     let obj2Bottom = obj2.y + obj2Frame.height;
 
-    //if collision
+    // Check for collision
     if (obj1Right > obj2Left && obj1Left < obj2Right && obj1Bottom > obj2Top && obj1Top < obj2Bottom) {
-        return true; 
+        return true;
     }
-    //no collision
-    return false; 
+
+    // No collision
+    return false;
 }
-
-

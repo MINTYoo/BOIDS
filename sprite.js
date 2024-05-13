@@ -18,17 +18,27 @@ class Sprite {
         this.currentAnimation = 'idle'; // Initial animation state
         this.loadedImgs = {}; 
         this.currentFrame = 0; // Current frame number
+        this.numFrames;
     }
 
     preloadAnimations() {
         // Preload images for each animation
-        for (let animation in this.data.TenderBud) {
-            let frames = this.data.TenderBud[animation].length;
-            this.loadedImgs[animation] = [];
-            for (let i = 0; i < frames; i++) {
-                let animationPath = `spriteImages/Penguins/TenderBud/${animation}/${i}.png`;
-                this.loadedImgs[animation].push(loadImage(animationPath));
-            }
+        this.loadedImgs[this.currentAnimation] = [];
+        this.numFrames = this.data.TenderBud[this.currentAnimation].length; // Use assignment instead of comparison
+        
+        // Load each frame of the current animation
+        for (let index = 0; index < this.data.TenderBud[this.currentAnimation].length; index++) {
+            const animationPath = `spriteImages/Penguins/TenderBud/${this.currentAnimation}/${index}.png`;
+            loadImage(animationPath, (img) => {
+                // Push the loaded image to the array
+                this.loadedImgs[this.currentAnimation].push(img);
+    
+               
+    
+                if (this.loadedImgs[this.currentAnimation].length === this.numFrames) {
+                    console.log('All frames loaded for animation:', this.currentAnimation);
+                }
+            });
         }
     }
     
@@ -40,7 +50,11 @@ class Sprite {
             //boid.limitSpeed(); // Limit speed
             boid.checkEdges(); // Check for boundary collisions
 
+
+            //boid.show();
+=======
             boid.show();
+
 
             this.x = boid.position.x; 
             this.y = boid.position.y; 
@@ -48,14 +62,20 @@ class Sprite {
 
     
     }
-
     display() {
         // Get the frames for the current animation
         let frames = this.loadedImgs[this.currentAnimation];
-        // Calculate the current frame number based on the number of frames
+        
+        // Check if frames are loaded 
+        if (!frames || frames.length === 0) {
+            return; 
+        }
+    
+       //can't exceed the size
         this.currentFrame = (this.currentFrame + 1) % frames.length;
-        // Draw the current frame
-        image(frames[this.currentFrame], this.x, this.y);
+        
+        // Draw t
+        image(frames[this.currentFrame], this.x, this.y); 
     }
 
 
@@ -64,8 +84,12 @@ class Sprite {
         // Reset the current frame when animation changes
         this.currentFrame = 0;
     }
-    getImageData(){
-        return this.loadedImgs[this.currentAnimation][this.currentFrame]
+    getImageData() {
+        return this.loadedImgs[this.currentAnimation][this.currentFrame];
+       
     }
+    
+   
+    
     
 }
