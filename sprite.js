@@ -24,7 +24,7 @@ class Sprite {
     preloadAnimations() {
         // Preload images for each animation
         this.loadedImgs[this.currentAnimation] = [];
-        this.numFrames = this.data.TenderBud[this.currentAnimation].length; // Use assignment instead of comparison
+        this.numFrames = this.data.TenderBud[this.currentAnimation].length; 
         
         // Load each frame of the current animation
         for (let index = 0; index < this.data.TenderBud[this.currentAnimation].length; index++) {
