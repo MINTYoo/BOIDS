@@ -49,12 +49,25 @@ class Boid {
             separation.limit(this.maxForce);
         }
 
-        //Assign Force Values based on sliders
+/*
         alignment.mult(alignSlider.value());
         cohesion.mult(cohesionSlider.value());
         separation.mult(separationSlider.value());
         this.perceptionRadius = perceptionSlider.value();
-        //this.maxSpeed = maxSpeedSlider.value();
+        this.maxSpeed = maxSpeedSlider.value();
+*/
+        //Assign Force Values based on sliders
+        var slider = document.getElementById("allignSlider");
+        alignment.mult(parseFloat(slider.value));
+
+        slider = document.getElementById("cohesionSlider");
+        cohesion.mult(parseFloat(slider.value));
+
+        slider = document.getElementById("separationSlider");
+        separation.mult(parseFloat(slider.value));
+
+        slider = document.getElementById("perceptionSlider");
+        this.perceptionRadius = parseFloat(slider.value);
 
         this.acceleration.add(alignment);
         this.acceleration.add(cohesion);
