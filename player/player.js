@@ -1,14 +1,10 @@
-class Player{
+class Player {
     constructor(data) {
         this.data = data;
-        // boid array
-   
-        
-  
         this.x = width / 2;
         this.y = height / 2;
         this.currentAnimation = 'idle'; // Initial animation state
-        this.loadedImgs = {}; 
+        this.loadedImgs = {};
         this.currentFrame = 0; // Current frame number
     }
 
@@ -24,45 +20,30 @@ class Player{
         }
     }
 
-
     updatePosition() {
-   
-
         this.x += this.x_velocity;
-        this.y += this.y_velocity; 
-        
-
-
+        this.y += this.y_velocity;
     }
 
     display() {
         // Get the frames for the current animation
         let frames = this.loadedImgs[this.currentAnimation];
-        this.currentFrame = (this.currentFrame + 1) % frames.length;
-        image(frames[this.currentFrame], this.x, this.y);
-    
-
+        if (frames && frames.length > 0) {
+            image(frames[this.currentFrame], this.x, this.y);
+        }
     }
-    
-    
-
 
     changeAnimation(animation) {
         this.currentAnimation = animation;
         // Reset the current frame when animation changes
         this.currentFrame = 0;
     }
-    getImageData(){
-        return this.loadedImgs[this.currentAnimation][this.currentFrame]
-    }
-
-    
 
     keyInput() {
         // Reset player velocity before checking for key presses
         this.x_velocity = 0;
         this.y_velocity = 0;
-    
+
         // Check for arrow key presses and update player velocity accordingly
         if (keyIsDown(RIGHT_ARROW)) {
             this.currentAnimation = "walk_E";
@@ -77,14 +58,13 @@ class Player{
             this.currentAnimation = "walk_S";
             this.y_velocity = 20;
         }
-    
+
         // Update player position
         this.updatePosition();
-    
+
         // Reset current frame to start from the beginning of the new animation
         this.currentFrame = 0;
     }
-    
         
 
         getImageData() {

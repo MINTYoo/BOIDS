@@ -28,8 +28,7 @@ function setup() {
     //Create Boids
     for(let i = 0; i < numBoids; i++) {
         let sprite = new Sprite(penguins, 3);
-        sprites.push(sprite);
-        sprite.preloadAnimations(); // Preload animations for each sprite
+        boids.push(new Boid());
     }
 
     player = new Player( penguins);
@@ -45,47 +44,47 @@ function draw() {
     player.checkEdges()
     player.display();
     player.keyInput();
-    for (let i = sprites.length - 1; i >= 0; i--) {
-        let sprite = sprites[i];
+    for (let i = boids.length - 1; i >= 0; i--) {
+        let boid = boids[i];
+        let sprite = boids[i].sprite;
+        
         if (checkCollision(player, sprite)) {
             console.log("Collision detected between player and sprite");
             // Remove sprite from array
-            sprites.splice(i, 1);
+            boids.splice(i, 1);
             collisionDetected = true;
             score++;
         } else {
-            sprite.updatePosition();
-            sprite.display();
+            boid.flock(boids);
+            boid.update();
+            boid.checkEdges(); // Check for boundary collisions
+            //boid.limitSpeed(); // Limit speed
+            //boid.show();
             //boid.flock(boids);
             //boid.update();
             //boid.checkEdges(); // Check for boundary collisions
             //boid.limitSpeed(); // Limit speed
             //boid.show();
         }
-    }
 
+    }
+    if ( boids.length === 0) {
+        spawnSprites();
+    }
     // Update and display player
     fill(255);
     textSize(24);
     text("Score: " + score, 20, 40);
 }
 
-/*
-function removeOneSprite() {
-    // Find the index of the first sprite that collided with the player
-    let index = -1;
-    for (let i = 0; i < sprites.length; i++) {
-        if (checkCollision(player, sprites[i])) {
-            index = i;
-            break;
-        }
+function spawnSprites() {
+    for (let i = 0; i < numBoids; i++) {
+        let sprite = new Sprite(penguins, 3);
+        boids.push(new Boid());
     }
-    // Remove the sprite at the found index
-    if (index !== -1) {
-        sprites.splice(index, 1);
-    }
+
 }
-*/
+
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
 }
@@ -124,6 +123,3 @@ function checkCollision(obj1, obj2) {
     // No collision
     return false;
 }
-
-
-
