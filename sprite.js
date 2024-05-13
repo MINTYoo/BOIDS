@@ -22,14 +22,15 @@ class Sprite {
 
     preloadAnimations() {
         // Preload images for each animation
-        for (let animation in this.data.TenderBud) {
-            let frames = this.data.TenderBud[animation].length;
-            this.loadedImgs[animation] = [];
-            for (let i = 0; i < frames; i++) {
-                let animationPath = `spriteImages/Penguins/TenderBud/${animation}/${i}.png`;
-                this.loadedImgs[animation].push(loadImage(animationPath));
-            }
+        if(this.data.TenderBud && frames){
+            return;
         }
+        this.loadedImgs = []
+        for (let i = 0; i < frames; i++) {
+            let animationPath = `spriteImages/Penguins/TenderBud/${animation}/${i}.png`;
+            this.loadedImgs[this.currentAnimation].push(loadImage(animationPath));
+        }
+        
     }
     
 
@@ -48,6 +49,7 @@ class Sprite {
 
     display() {
         // Get the frames for the current animation
+ 
         let frames = this.loadedImgs[this.currentAnimation];
         // Calculate the current frame number based on the number of frames
         this.currentFrame = (this.currentFrame + 1) % frames.length;
