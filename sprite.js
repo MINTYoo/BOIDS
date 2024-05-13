@@ -52,7 +52,7 @@ class Sprite {
 
 
             //boid.show();
-=======
+
             boid.show();
 
 
