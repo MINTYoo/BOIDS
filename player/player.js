@@ -1,37 +1,62 @@
-class Player {
-    constructor(x, y, animation, data) {
-        this.x = x;
-        this.y = y;
-        this.x_velocity = 0;
-        this.y_velocity = 0;
-        this.animation = animation;
-        this.frame = 0;
-        this.currentFrame = 0;
+class Player{
+    constructor(data) {
         this.data = data;
-        this.animationFrames = [];
+        // boid array
+   
+        
+  
+        this.x = width / 2;
+        this.y = height / 2;
+        this.currentAnimation = 'idle'; // Initial animation state
+        this.loadedImgs = {}; 
+        this.currentFrame = 0; // Current frame number
     }
 
-    load() {
-        let animationLength = this.data.TenderBud[this.animation].length;
-        for (let i = 0; i < animationLength; i++) {
-            let imagePath = `spriteImages/Penguins/TenderBud/${this.animation}/${i}.png`;
-            let img = loadImage(imagePath);
-           // console.log(imagePath)
-            this.animationFrames.push(img);
+    preloadAnimations() {
+        // Preload images for each animation
+        for (let animation in this.data.TenderBud) {
+            let frames = this.data.TenderBud[animation].length;
+            this.loadedImgs[animation] = [];
+            for (let i = 0; i < frames; i++) {
+                let animationPath = `spriteImages/Penguins/TenderBud/${animation}/${i}.png`;
+                this.loadedImgs[animation].push(loadImage(animationPath));
+            }
         }
     }
 
-    display() {
-        image(this.animationFrames[this.currentFrame], this.x, this.y);
-        this.currentFrame = (this.currentFrame + 1) % this.animationFrames.length;
-    }
 
     updatePosition() {
+   
+
         this.x += this.x_velocity;
-        this.y += this.y_velocity;
+        this.y += this.y_velocity; 
+        
+
+
     }
 
+    display() {
+        // Get the frames for the current animation
+        let frames = this.loadedImgs[this.currentAnimation];
+        this.currentFrame = (this.currentFrame + 1) % frames.length;
+        image(frames[this.currentFrame], this.x, this.y);
+    
 
+    }
+    
+    
+
+
+    changeAnimation(animation) {
+        this.currentAnimation = animation;
+        // Reset the current frame when animation changes
+        this.currentFrame = 0;
+    }
+    getImageData(){
+        return this.loadedImgs[this.currentAnimation][this.currentFrame]
+    }
+
+    
 
     keyInput() {
         // Reset player velocity before checking for key presses
@@ -40,16 +65,16 @@ class Player {
     
         // Check for arrow key presses and update player velocity accordingly
         if (keyIsDown(RIGHT_ARROW)) {
-            this.animation = "walk_E";
+            this.currentAnimation = "walk_E";
             this.x_velocity = 20;
         } else if (keyIsDown(LEFT_ARROW)) {
-            this.animation = "walk_W";
+            this.currentAnimation = "walk_W";
             this.x_velocity = -20;
         } else if (keyIsDown(UP_ARROW)) {
-            this.animation = "walk_N";
+            this.currentAnimation = "walk_N";
             this.y_velocity = -20;
         } else if (keyIsDown(DOWN_ARROW)) {
-            this.animation = "walk_S";
+            this.currentAnimation = "walk_S";
             this.y_velocity = 20;
         }
     
@@ -59,14 +84,31 @@ class Player {
         // Reset current frame to start from the beginning of the new animation
         this.currentFrame = 0;
     }
-
-    getImageData(){
-        return this.animationFrames[this.currentFrame]
-    }
     
-    
+        
 
+        getImageData() {
+            return this.loadedImgs[this.currentAnimation][this.currentFrame];
+         
+        }
+        checkEdges() {
+            if (this.x > width) {
+                this.x = width;
+                this.x_velocity *= -1;
+                this.x -= 100;
+            } else if (this.x < 0) {
+                this.x = 0;
+                this.x_velocity *= -1;
+                this.x += 100;
+            }
+        
+            if (this.y > height) {
+                this.y = height;
+                this.y_velocity *= -1;
+            } else if (this.y < 0) {
+                this.y = 0;
+                this.y_velocity *= -1;
+            }
+        }
+        
 }
-
-
-
