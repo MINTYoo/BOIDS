@@ -5,7 +5,6 @@ let penguins;
 let bkImage;
 let boids = [];
 
-let numBoids = 5;
 let score = 0;
 
 let numBoids = 10;
@@ -23,30 +22,20 @@ function preload() {
 function setup() {
     createCanvas(windowWidth, windowHeight);
 
+    /*
     alignSlider = createSlider(0, 2, 0, 0.1);
     cohesionSlider = createSlider(0, 2, 0, 0.1);
     separationSlider = createSlider(0, 2, 0, 0.1);
     perceptionSlider = createSlider(0, 500, 5, 10);
     //maxSpeedSlider = createSlider(2, 14, 4, 2);
-    
-
+*/
     //Create Boids
     for(let i = 0; i < numBoids; i++) {
-
-        let sprite = new Sprite(penguins, 3);
         boids.push(new Boid());
     }
 
     player = new Player( penguins);
     player.preloadAnimations(); // Preload animation frames
-
-
-        boids.push(new Boid());
-    }
-
-    player = new Player(100, 100, "idle", penguins);
-    player.load(); // Preload animation frames
-
 }
 
 // Draw function
@@ -54,21 +43,9 @@ function draw() {
     background(bkImage);
 
     // Update and display sprites
-
     player.checkEdges()
     player.display();
     player.keyInput();
-    for (let i = boids.length - 1; i >= 0; i--) {
-        let boid = boids[i];
-        let sprite = boids[i].sprite;
-        
-        if (checkCollision(player, sprite)) {
-            console.log("Collision detected between player and sprite");
-            // Remove sprite from array
-            boids.splice(i, 1);
-            collisionDetected = true;
-            score++;
-        } else {
 
     for (let i = boids.length - 1; i >= 0; i--) {
         let boid = boids[i];
@@ -76,33 +53,37 @@ function draw() {
         if (checkCollision(player, sprite)) {
             console.log("Collision detected between player and sprite");
             //we can remove from the array
-            //sprites.splice(i, 1);
             boids.splice(i, 1);
+            collisionDetected = true;
+            score++;
         } else {
-          // sprite.updatePosition();
-          // sprite.display();
             //Assign each boid to the boids flock and update/display position
-
             boid.flock(boids);
             boid.update();
             boid.checkEdges(); // Check for boundary collisions
             //boid.limitSpeed(); // Limit speed
-
-            //boid.show();
-            //boid.flock(boids);
-            //boid.update();
-            //boid.checkEdges(); // Check for boundary collisions
-            //boid.limitSpeed(); // Limit speed
-            //boid.show();
-
-            boid.show();
-
         }
 
     }
+    //If all boids were destroyed, create new wave with randomized physics
     if ( boids.length === 0) {
+        var slider = document.getElementById("allignSlider");
+        slider.value = Math.random();
+
+        slider = document.getElementById("cohesionSlider");
+        slider.value = Math.random();
+
+        slider = document.getElementById("separationSlider");
+        slider.value = Math.random();
+
+        slider = document.getElementById("perceptionSlider");
+        slider.value = Math.floor(Math.random() * 500);
+
+        numBoids = Math.floor(Math.random() * 50);
+
         spawnSprites();
     }
+
     // Update and display player
     fill(255);
     textSize(24);
@@ -122,14 +103,16 @@ function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
 }
 
-
+/*
 
 function checkCollision(obj1, obj2) {
     // Check if animation frames are loaded
     if (obj1.animationFrames.length === 0 || obj2.loadedImgs[obj1.animation] === undefined) {
         return false; 
     }
+}
 
+*/
 function checkCollision(obj1, obj2) {
 
 
@@ -137,9 +120,7 @@ function checkCollision(obj1, obj2) {
     let obj1Frame = obj1.getImageData();
     let obj2Frame = obj2.getImageData();
 
-
     //need to be defined to not get hight/width error
-
     if (!obj1Frame || !obj2Frame) {
         return false;
     }
@@ -158,6 +139,10 @@ function checkCollision(obj1, obj2) {
 
     // Check for collision
     if (obj1Right > obj2Left && obj1Left < obj2Right && obj1Bottom > obj2Top && obj1Top < obj2Bottom) {
+
+        var audio = new Audio('sounds/battlefeild-1-kill-sound-effect-made-with-Voicemod.mp3');
+        audio.play();
+
         return true;
     }
 
